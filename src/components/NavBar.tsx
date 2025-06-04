@@ -15,12 +15,12 @@ function NavBar() {
 
   const menuList = (
     <>
-      {/* <Link
+      <Link
         to="/movies"
         className="text-gray-300 hover:text-yellow-500 transition"
       >
         Movies
-      </Link> */}
+      </Link>
       {/* <Link
         to="/tv-shows"
         className="text-gray-300 hover:text-yellow-500 transition"
@@ -59,7 +59,7 @@ function NavBar() {
 
   return (
     <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
-      <div className="container mx-auto px-4">
+      <div className="w-full px-4 md:px-10">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-4">
@@ -91,9 +91,9 @@ function NavBar() {
                 setResults={setSearchResults}
               />
             </div>
-            <button className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition cursor-pointer">
+            {/* <button className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition cursor-pointer">
               <User className="h-5 w-5 text-gray-300" />
-            </button>
+            </button> */}
           </div>
 
           {/* Mobile Menu Button */}
