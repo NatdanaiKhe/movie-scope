@@ -29,11 +29,11 @@ function FeatureCard({movies, type}:{ movies: MovieType[] , type: string }) {
   )
 
   return (
-    <div className="w-full h-full flex flex-col items-start justify-start text-yellow-400 md:px-10">
+    <div className="w-full h-full flex flex-col items-start justify-start text-yellow-400 p-4 md:px-10">
       <div className="w-full flex justify-between items-center">
         {Header}
         <span className="text-lg ml-2 text-gray-300 hover:text-yellow-400 hover:underline transition">
-          <Link to={`/${type}`}>View All</Link>
+          <Link to={`/movies?sort_by=${type === "trending" ? "popularity" : "rated"}`}>View All</Link>
         </span>
       </div>
 

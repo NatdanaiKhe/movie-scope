@@ -21,15 +21,18 @@ function NavBar() {
       >
         Movies
       </Link>
-      {/* <Link
-        to="/tv-shows"
+      <Link
+        to="/movies?sort_by=popular"
         className="text-gray-300 hover:text-yellow-500 transition"
       >
-        TV Shows
+        Trending
       </Link>
-      <Link to="#" className="text-gray-300 hover:text-yellow-500 transition">
-        Celebrities
-      </Link> */}
+      <Link
+        to="/movies?sort_by=rated"
+        className="text-gray-300 hover:text-yellow-500 transition"
+      >
+        Top Rated
+      </Link>
     </>
   );
 
