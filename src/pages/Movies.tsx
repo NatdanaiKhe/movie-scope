@@ -8,15 +8,19 @@ import MovieCard from "@/components/MovieCard";
 function Movies() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1", 10);
-  console.log("Page parameter:", page);
+  const genre = searchParams.get("genre") || "";  
+  const sort = searchParams.get("sort_by") || "popularity";
+
+
   const [movies, setMovies] = useState<MovieType[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
 
+
+  // pagination
   const visiblePages = 5;
   let startPage = Math.max(page - Math.floor(visiblePages / 2), 1);
 
-  // Ensure we always show `visiblePages` if possible
   if (startPage + visiblePages - 1 > totalPages) {
     startPage = Math.max(totalPages - visiblePages + 1, 1);
   }
@@ -24,13 +28,15 @@ function Movies() {
   // event handler for
   const handlePageChange = (newPage: number) => {
     if (newPage < 1) return; // Prevent going to a negative page
-    setSearchParams({ page: newPage.toString() });
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("page", newPage.toString());
+    setSearchParams(newParams);
   };
 
   useEffect(() => {
     async function fetchMovies() {
       try {
-        const data = await getAllMovies(page);
+        const data = await getAllMovies(page, genre, sort);
         if (!data || !data.results) {
           throw new Error("No results found");
         }
