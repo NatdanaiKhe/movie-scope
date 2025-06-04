@@ -26,7 +26,7 @@ function MovieCard({movie}: {movie: MovieType}) {
     onMouseLeave={handleMouseLeave} 
     >
       <img
-        src={getMoviePosterUrl(movie.poster_path)}
+        src={getMoviePosterUrl(movie.poster_path || "")}
         alt="Movie Poster"
         className="aspect-[2/3] object-cover rounded-t-lg"
       />
