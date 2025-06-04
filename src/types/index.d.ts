@@ -45,7 +45,7 @@ export type VideoType = {
   size: number;
 }
 
-type MovieCreditsType = {
+export type MovieCreditsType = {
   id: number;
   cast: {
     cast_id: number;
@@ -65,16 +65,21 @@ type MovieCreditsType = {
   }[]; 
 }
 
-type CastType = {
+export type CastType = {
   id: number;
   name: string;
   character: string;
   profile_path: string | null; // URL to the actor's profile picture
 }
 
-type CrewType = {
+export type CrewType = {
   id: number;
   name: string;
   job: string; // Role in the movie (e.g., Director, Producer)
   profile_path: string | null; // URL to the crew member's profile picture
+}
+
+export type CategoryType = {
+  id: number;
+  name: string;
 }
