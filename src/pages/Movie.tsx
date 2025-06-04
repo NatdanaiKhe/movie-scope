@@ -6,7 +6,6 @@ import { getMovieBackdropUrl } from "@/services/movies.service";
 import {
   Calendar,
   Clapperboard,
-  LoaderCircle,
   PlayIcon,
   Star,
   WalletMinimal,
@@ -14,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import { getTrailerUrl } from "@/services/movies.service";
 import CastCard from "@/components/CastCard";
+import Loader from "@/components/Loader";
 
 function Movie() {
   const { movieId } = useParams<{ movieId: string }>();
@@ -79,11 +79,7 @@ function Movie() {
   }, [movieId]);
 
   if (loading) {
-    return (
-      <div className="w-full h-full flex justify-center items-center">
-        <LoaderCircle className="text-yellow-400 animate-spin" />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (!movie || !movie.id || credits === null) {
