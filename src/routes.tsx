@@ -3,6 +3,7 @@ import MainLayout from "@/layout/MainLayout";
 import Error from "@/components/Error";
 import Home from "@/pages/Home";
 import Movie from "@/pages/Movie";
+import Movies from "@/pages/Movies";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,12 @@ const router = createBrowserRouter([
       {
         path: "movie/:movieId",
         element: <Movie />,
-      }
+      },
+      {
+        path: "movies",
+        element: <Movies />, // Assuming you want to show the same Home component for /movies
+      },
+      
     ],
   },
 ]);
