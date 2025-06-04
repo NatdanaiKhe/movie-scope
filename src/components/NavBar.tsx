@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { SearchMovies } from "@/services/movies.service";
 import { Search, User, Menu, X } from "lucide-react";
 import type { MovieType } from "@/types";
-import SearchResult from "./searchResult";
+import SearchResult from "./SearchResult";
 
 function NavBar() {
   // const navigate = useNavigate();
