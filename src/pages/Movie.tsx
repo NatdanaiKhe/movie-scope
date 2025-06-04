@@ -58,6 +58,7 @@ function Movie() {
           throw new Error("Invalid movie ID");
         }
         const creditsData = await getMovieCredits(id);
+
         if (!creditsData) {
           throw new Error("No movie credits found");
         }
@@ -198,6 +199,7 @@ function Movie() {
       <div className="w-full p-4 md:p-10">
         <h2 className="text-2xl font-bold text-white mb-4">Cast</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {credits.cast.length == 0 && <h1 className="text-white">No data</h1>}
           {credits.cast.slice(0, 5).map(castMember => (
             <CastCard
               key={castMember.cast_id}
@@ -215,6 +217,7 @@ function Movie() {
       <div className="w-full p-4 md:p-10">
         <h2 className="text-2xl font-bold text-white mb-4">Featured Crew</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {credits.crew.length == 0 && <h1 className="text-white">No data</h1>}
           {credits.crew.slice(0, 5).map(crewMember => (
             <CastCard
               key={crewMember.id}
@@ -223,7 +226,6 @@ function Movie() {
                 name: crewMember.name,
                 character: crewMember.job,
                 profile_path: crewMember.profile_path,
-                
               }}
             />
           ))}
