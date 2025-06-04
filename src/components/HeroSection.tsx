@@ -12,7 +12,6 @@ function HeroSection({movie}: {movie: MovieType }) {
         const trailerUrl = await getTrailerUrl(movie.id);
         if (trailerUrl) {
           setMovieTrailer(trailerUrl);
-          console.log("Trailer URL:", trailerUrl);
         } else {
           console.log("No trailer found for this movie.");
         }
@@ -27,7 +26,7 @@ function HeroSection({movie}: {movie: MovieType }) {
       <div
         className="w-full h-full bg-cover bg-center md:rounded-lg shadow-lg relative"
         style={{
-          backgroundImage: `url(${getMovieBackdropUrl(movie.backdrop_path)})`,
+          backgroundImage: `url(${getMovieBackdropUrl(movie.backdrop_path || "")})`,
           
         }}
       >
