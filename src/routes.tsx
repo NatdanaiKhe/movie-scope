@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
-        path: "", 
+        path: "",
         element: <Home />,
       },
       {
@@ -21,9 +21,12 @@ const router = createBrowserRouter([
       },
       {
         path: "movies",
-        element: <Movies />, // Assuming you want to show the same Home component for /movies
+        element: <Movies />,
       },
-      
+      {
+        path: "*",
+        element: <Error />,
+      },
     ],
   },
 ]);
