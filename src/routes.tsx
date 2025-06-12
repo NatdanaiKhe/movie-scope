@@ -8,11 +8,11 @@ import Movies from "@/pages/Movies";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />, // Set MainLayout as the parent element
+    element: <MainLayout />,
     errorElement: <Error />,
     children: [
       {
-        path: "", // This means the index route (i.e., "/")
+        path: "", 
         element: <Home />,
       },
       {

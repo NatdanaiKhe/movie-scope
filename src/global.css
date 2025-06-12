@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 :root {
   --font-family-base: "Inter", sans-serif;
   --color-background: #faf4f0;
@@ -9,6 +10,7 @@
   --max-width: 1920px;
   --border-radius: 0.5rem;
   --transition: 0.2s ease-in-out;
+ 
 }
 
 *,
@@ -38,4 +40,12 @@ body {
   display: flex;
   flex-direction: column;
   overscroll-behavior: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

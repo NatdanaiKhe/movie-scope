@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { SearchMovies } from "@/services/movies.service";
-import { Search, User, Menu, X } from "lucide-react";
+import { Search, Menu, X } from "lucide-react";
 import type { MovieType } from "@/types";
 import SearchResult from "./SearchResult";
 
@@ -144,9 +144,7 @@ function NavBar() {
           <nav className="md:hidden py-3 border-t border-gray-800">
             <div className="flex flex-col space-y-3">
               {menuList}
-              <button className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 w-fit">
-                <User className="h-5 w-5 text-gray-300" />
-              </button>
+              
             </div>
           </nav>
         )}
