@@ -4,7 +4,7 @@ function Footer() {
       <p className="text-sm">
         &copy; {new Date().getFullYear()} MovieScope. All rights reserved.
       </p>
-      <div className="flex justify-between items-center gap-4">
+      {/* <div className="flex justify-between items-center gap-4">
         <a
           href="/terms"
           className="text-sm text-gray-400 hover:text-yellow-400"
@@ -17,7 +17,7 @@ function Footer() {
         >
           Privacy Policy
         </a>
-      </div>
+      </div> */}
     </footer>
   );
 }

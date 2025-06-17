@@ -16,23 +16,29 @@ function MovieCard({movie}: {movie: MovieType}) {
   };
 
   return (
-    <div className="w-full h-full relative shadow-lg cursor-pointer"
-    onClick={() => {
-      navigate(`/movie/${movie.id}`, {
-        state: { movie },
-      });
-    }}
-    onMouseEnter={handleMouseEnter}
-    onMouseLeave={handleMouseLeave} 
+    <div
+      className="w-full h-full relative shadow-lg cursor-pointer"
+      onClick={() => {
+        navigate(`/movie/${movie.id}`, {
+          state: { movie },
+        });
+      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <img
         src={getMoviePosterUrl(movie.poster_path || "")}
         alt="Movie Poster"
-        className="aspect-[2/3] object-cover rounded-t-lg"
+        className="aspect-[2/3] object-cover rounded-lg"
       />
 
       {/* detail */}
-      <div className={'absolute w-full left-0 bottom-0 p-4 md:p-10 z-10 bg-gradient-to-t from-black/100 to-transparent' + (isHovered ? ' block' : ' hidden')}>
+      <div
+        className={
+          "absolute w-full left-0 bottom-0 p-4 md:p-10 z-10 rounded-lg bg-gradient-to-t from-black/100 to-transparent" +
+          (isHovered ? " block" : " hidden")
+        }
+      >
         <h1 className="text-3xl font-bold text-white">{movie.title}</h1>
         <div className="flex items-center gap-2 mt-2">
           <Star className="text-yellow-400" />

@@ -8,14 +8,12 @@ import MovieCard from "@/components/MovieCard";
 function Movies() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1", 10);
-  const genre = searchParams.get("genre") || "";  
+  const genre = searchParams.get("genre") || "";
   const sort = searchParams.get("sort_by") || "popularity";
-
 
   const [movies, setMovies] = useState<MovieType[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
-
 
   // pagination
   const visiblePages = 5;
@@ -28,7 +26,8 @@ function Movies() {
   // event handler for
   const handlePageChange = (newPage: number) => {
     if (newPage < 1) return; // Prevent going to a negative page
-    const newParams = new URLSearchParams(searchParams.toString());
+    if (newPage > totalPages) return;
+      const newParams = new URLSearchParams(searchParams.toString());
     newParams.set("page", newPage.toString());
     setSearchParams(newParams);
   };
@@ -50,7 +49,7 @@ function Movies() {
     }
 
     fetchMovies();
-  }, [searchParams,page]);
+  }, [searchParams, page]);
 
   if (loading) {
     return <Loader />;
@@ -88,7 +87,7 @@ function Movies() {
           <li>
             <a
               onClick={() => handlePageChange(page - 1)}
-              className="flex items-center justify-center px-3 h-8 cursor-pointer ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              className="flex items-center justify-center px-3 h-8 cursor-pointer ms-0 leading-tight   border border-e-0 rounded-s-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
             >
               Previous
             </a>
@@ -102,7 +101,7 @@ function Movies() {
                   className={`flex items-center justify-center px-3 h-8 cursor-pointer leading-tight ${
                     pageNumber === page
                       ? "text-yellow-400 bg-gray-900"
-                      : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                      : " border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
                   }`}
                 >
                   {pageNumber}
@@ -113,7 +112,7 @@ function Movies() {
           <li>
             <a
               onClick={() => handlePageChange(page + 1)}
-              className="flex items-center justify-center px-3 h-8 cursor-pointer leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              className="flex items-center justify-center px-3 h-8 cursor-pointer leading-tight  border rounded-e-l bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
             >
               Next
             </a>

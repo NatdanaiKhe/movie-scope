@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 :root {
   --font-family-base: "Inter", sans-serif;
   --color-background: #faf4f0;
@@ -10,7 +9,6 @@
   --max-width: 1920px;
   --border-radius: 0.5rem;
   --transition: 0.2s ease-in-out;
- 
 }
 
 *,
@@ -41,10 +39,29 @@ body {
   flex-direction: column;
   overscroll-behavior: none;
 }
-
+button {
+  @apply cursor-pointer;
+}
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-gray-900
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-zinc-700 border-0 rounded-sm
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
