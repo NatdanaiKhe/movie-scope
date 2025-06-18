@@ -4,6 +4,7 @@ import { SearchMovies } from "@/services/movies.service";
 import { Search, Menu, X } from "lucide-react";
 import type { MovieType } from "@/types";
 import SearchResult from "./SearchResult";
+import "@/styles/navbar.css"
 
 function NavBar() {
   // const navigate = useNavigate();
@@ -119,6 +120,7 @@ function NavBar() {
             </button>
           </div>
         </div>
+
         {/* Mobile Search */}
         {isSearchOpen && (
           <div className="md:hidden py-3 border-t border-gray-800">

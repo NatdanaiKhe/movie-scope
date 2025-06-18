@@ -127,16 +127,18 @@ function Movie() {
               </span>
             ))}
           </div>
-          <button className=" mt-4 px-6 py-2 bg-yellow-500 text-black font-semibold cursor-pointer rounded-4xl hover:bg-yellow-600 transition">
-            <PlayIcon className="inline mr-2" />
-            <Link
-              to={movieTrailer ?? "#"}
-              target="_blank"
-              className="text-black"
-            >
-              Watch Trailer
-            </Link>
-          </button>
+          {movieTrailer && (
+            <button className=" mt-4 px-6 py-2 bg-yellow-500 text-black font-semibold cursor-pointer rounded-4xl hover:bg-yellow-600 transition">
+              <PlayIcon className="inline mr-2" />
+              <Link
+                to={movieTrailer ?? "#"}
+                target="_blank"
+                className="text-black"
+              >
+                Watch Trailer
+              </Link>
+            </button>
+          )}
         </div>
       </div>
 
