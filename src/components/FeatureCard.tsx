@@ -1,15 +1,13 @@
 import type { MovieType } from "@/types";
-import { ChevronLeft, ChevronRight, Flame, TrendingUp } from "lucide-react";
+import { Flame, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import MovieCard from "./MovieCard";
 import { Navigation, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/navigation";
 import "swiper/css";
-import { useRef } from "react";
 
 function FeatureCard({ movies, type }: { movies: MovieType[]; type: string }) {
-
   if (!movies || movies.length === 0) {
     return (
       <div className="w-full h-full flex justify-center items-center">
@@ -55,7 +53,7 @@ function FeatureCard({ movies, type }: { movies: MovieType[]; type: string }) {
         spaceBetween={50}
         slidesPerView={4}
         breakpoints={{
-          1440:{
+          1440: {
             slidesPerView: 4,
           },
           1024: {
