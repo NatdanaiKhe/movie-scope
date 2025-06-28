@@ -73,7 +73,7 @@ function FeatureCard({ movies, type }: { movies: MovieType[]; type: string }) {
       >
         {movies &&
           movies.map(movie => (
-            <SwiperSlide>
+            <SwiperSlide key={movie.id}>
               <MovieCard key={movie.id} movie={movie} />
             </SwiperSlide>
           ))}

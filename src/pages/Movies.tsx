@@ -27,7 +27,7 @@ function Movies() {
   const handlePageChange = (newPage: number) => {
     if (newPage < 1) return; // Prevent going to a negative page
     if (newPage > totalPages) return;
-      const newParams = new URLSearchParams(searchParams.toString());
+    const newParams = new URLSearchParams(searchParams.toString());
     newParams.set("page", newPage.toString());
     setSearchParams(newParams);
   };
@@ -35,6 +35,7 @@ function Movies() {
   useEffect(() => {
     async function fetchMovies() {
       try {
+        setLoading(true)
         const data = await getAllMovies(page, genre, sort);
         if (!data || !data.results) {
           throw new Error("No results found");
@@ -49,7 +50,7 @@ function Movies() {
     }
 
     fetchMovies();
-  }, [searchParams, page]);
+  }, [searchParams, page, genre, sort]);
 
   if (loading) {
     return <Loader />;

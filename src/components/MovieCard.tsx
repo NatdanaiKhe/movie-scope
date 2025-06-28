@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 function MovieCard({movie}: {movie: MovieType}) {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   const handleMouseLeave = () => {
     setIsHovered(false);
@@ -26,10 +27,16 @@ function MovieCard({movie}: {movie: MovieType}) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {!loaded && (
+        <div className="animate-pulse bg-gray-700 w-full aspect-[2/3]"></div>
+      )}
       <img
         src={getMoviePosterUrl(movie.poster_path || "")}
         alt="Movie Poster"
-        className="aspect-[2/3] object-cover rounded-lg"
+        onLoad={() => setLoaded(true)}
+        className={`aspect-[2/3] object-cover rounded-lg ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
       />
 
       {/* detail */}
