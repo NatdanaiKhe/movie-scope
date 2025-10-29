@@ -1,12 +1,12 @@
-'use client'
-import { useEffect, useState } from "react";
+"use client";
+import { Suspense, useEffect, useState } from "react";
 import type { MovieType } from "@/types";
 import { movieService } from "@/services/movies.service";
 import Loader from "@/components/Loader";
 import MovieCard from "@/components/MovieCard";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function Movies() {
+function MoviesClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const page = Number.parseInt(searchParams.get("page") || "1", 10);
@@ -29,15 +29,14 @@ function Movies() {
   const handlePageChange = (newPage: number) => {
     if (newPage < 1) return; // Prevent going to a negative page
     if (newPage > totalPages) return;
-    const newRoute = sort ? `&sort=${sort}` : null
-    router.push(`/movies?page=${newPage}${newRoute}`)
-    
+    const newRoute = sort ? `&sort=${sort}` : null;
+    router.push(`/movies?page=${newPage}${newRoute}`);
   };
 
   useEffect(() => {
     async function fetchMovies() {
       try {
-        setLoading(true)
+        setLoading(true);
         const data = await movieService.getAllMovies(page, genre, sort);
         if (!data?.results) {
           throw new Error("No results found");
@@ -77,7 +76,7 @@ function Movies() {
         </div>
         <div className="h-full overflow-y-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {movies.map(movie => (
+            {movies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
@@ -123,6 +122,14 @@ function Movies() {
         </ul>
       </nav>
     </div>
+  );
+}
+
+export function Movies() {
+  return (
+    <Suspense fallback={<Loader />}>
+      <MoviesClient />
+    </Suspense>
   );
 }
 

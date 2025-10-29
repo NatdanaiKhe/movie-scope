@@ -1,4 +1,4 @@
-import { Genre } from "@/types/movie.type";
+import { Genre } from "@/types/index";
 import { NextRequest, NextResponse } from "next/server";
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;

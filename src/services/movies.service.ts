@@ -1,7 +1,6 @@
 import api from "@/lib/axios";
 import type { VideoType } from "@/types";
 
-// Movie Service - All API calls in one place
 export const movieService = {
   // Get movie details by ID
   async getMovieDetails(movieId: number) {
