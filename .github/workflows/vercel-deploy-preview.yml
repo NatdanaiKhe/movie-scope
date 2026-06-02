@@ -20,6 +20,10 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
 
+      - run: bun install
+
+      - run: bunx prisma generate
+
       - run: npm install -g vercel
 
       - run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
