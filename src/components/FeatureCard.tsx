@@ -36,7 +36,7 @@ function FeatureCard({
   );
 
   return (
-    <div className="w-full h-full no-scrollbar flex flex-col items-start justify-start text-yellow-400 p-4 md:px-10">
+    <div className="w-full no-scrollbar flex flex-col items-start justify-start text-yellow-400 p-4 md:px-10">
       <div className="w-full flex justify-between items-center">
         {Header}
         <span className="text-lg ml-2 text-gray-300 hover:text-yellow-400 hover:underline transition">
@@ -51,36 +51,35 @@ function FeatureCard({
       </div>
 
       {/* Scrollable movie list */}
-      <div className="w-full h-auto flex flex-row overflow-x-auto mt-4">
-      <Swiper
-        modules={[Navigation, Scrollbar]}
-        spaceBetween={50}
-        slidesPerView={4}
-        breakpoints={{
-          1440: {
-            slidesPerView: 4,
-          },
-          1024: {
-            slidesPerView: 3,
-          },
-          768: {
-            slidesPerView: 2,
-          },
-          320: {
-            slidesPerView: 1,
-          },
-        }}
-        autoHeight 
-        navigation
-        scrollbar={{ draggable: true }}
-        
-      >
-        {movies?.map((movie) => (
-           <SwiperSlide key={movie.id} >
-              <MovieCard key={movie.id} movie={movie} />
+      <div className="w-full mt-4">
+        <Swiper
+          className="w-full !h-auto"
+          modules={[Navigation, Scrollbar]}
+          spaceBetween={50}
+          slidesPerView={4}
+          breakpoints={{
+            1440: {
+              slidesPerView: 4,
+            },
+            1024: {
+              slidesPerView: 3,
+            },
+            768: {
+              slidesPerView: 2,
+            },
+            320: {
+              slidesPerView: 1,
+            },
+          }}
+          navigation
+          scrollbar={{ draggable: true }}
+        >
+          {movies?.map((movie) => (
+            <SwiperSlide key={movie.id}>
+              <MovieCard movie={movie} />
             </SwiperSlide>
-        ))}
-      </Swiper>
+          ))}
+        </Swiper>
       </div>
     </div>
   );
