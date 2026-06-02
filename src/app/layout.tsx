@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import NavBar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AuthProvider from "@/components/auth/AuthProvider";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -31,9 +32,11 @@ export default function RootLayout({
       <body>
         <div id="root">
           <div className="flex h-full w-full flex-auto flex-col justify-between bg-gray-900">
-            <NavBar />
-            {children}
-            <Footer />
+            <AuthProvider>
+              <NavBar />
+              {children}
+              <Footer />
+            </AuthProvider>
           </div>
         </div>
       </body>
