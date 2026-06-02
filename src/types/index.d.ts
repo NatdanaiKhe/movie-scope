@@ -88,3 +88,46 @@ export type Genre = {
   id: number;
   name: string;
 };
+
+export type AuthUser = {
+  id: string;
+  name: string;
+  email: string;
+  profile?: Profile | null;
+};
+
+export type LoginPayload = {
+  email: string;
+  password: string;
+};
+
+export type RegisterPayload = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type AuthResponse = {
+  user: AuthUser;
+};
+
+export type Profile = {
+  id: string;
+  userId: string;
+  displayName: string;
+  bio: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ProfileResponse = {
+  profile: Profile;
+};
+
+export type CreateProfilePayload = {
+  userId: string;
+  displayName: string;
+  bio?: string | null;
+  avatarUrl?: string | null;
+};
