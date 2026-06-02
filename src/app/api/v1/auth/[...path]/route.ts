@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 const AUTH_API_URL =
   process.env.AUTH_API_URL ?? "http://localhost:3000/api/v1/auth";
@@ -19,6 +20,7 @@ async function proxyAuthRequest(request: NextRequest, context: RouteContext) {
   }
 
   const { path } = await context.params;
+  const authPath = path.join("/");
   const targetUrl = new URL(`${AUTH_API_URL}/${path.join("/")}`);
   targetUrl.search = request.nextUrl.search;
 
@@ -27,13 +29,16 @@ async function proxyAuthRequest(request: NextRequest, context: RouteContext) {
   headers.delete("host");
   headers.delete("content-length");
 
-  const body =
+  const requestBody =
     request.method === "GET" || request.method === "HEAD"
-      ? undefined
-      : JSON.stringify({
-          ...(await getJsonBody(request)),
-          projectApiKey: AUTH_PROJECT_API_KEY,
-        });
+      ? null
+      : await getJsonBody(request);
+  const body = requestBody
+    ? JSON.stringify({
+        ...requestBody,
+        projectApiKey: AUTH_PROJECT_API_KEY,
+      })
+    : undefined;
 
   const response = await fetch(targetUrl, {
     method: request.method,
@@ -42,11 +47,56 @@ async function proxyAuthRequest(request: NextRequest, context: RouteContext) {
     redirect: "manual",
   });
 
+  if (request.method === "POST" && authPath === "register" && response.ok) {
+    await createProfileAfterRegister(response.clone(), requestBody);
+  }
+
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
     headers: response.headers,
   });
+}
+
+async function createProfileAfterRegister(
+  response: Response,
+  requestBody: Record<string, unknown> | null,
+) {
+  try {
+    const data = (await response.json()) as {
+      id?: string;
+      name?: string;
+    };
+    const userId = data.id;
+    const displayName = getString(requestBody?.name) ?? getString(data.name);
+
+    if (!userId || !displayName) {
+      console.error("Profile creation skipped after register:", {
+        hasUserId: Boolean(userId),
+        hasDisplayName: Boolean(displayName),
+      });
+      return;
+    }
+
+    await prisma.profile.upsert({
+      where: {
+        userId,
+      },
+      create: {
+        userId,
+        displayName,
+      },
+      update: {
+        displayName,
+      },
+    });
+  } catch (error) {
+    console.error("Profile creation failed after auth register:", error);
+  }
+}
+
+function getString(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
 async function getJsonBody(request: NextRequest) {

@@ -8,7 +8,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { authService } from "@/services/auth.service";
+import { profileService } from "@/services/profile.service";
 import { useAuthStore } from "@/stores/auth.store";
+import type { AuthUser, Profile } from "@/types";
 
 const loginSchema = yup
   .object({
@@ -25,6 +27,24 @@ const loginSchema = yup
   .required();
 
 type LoginFormValues = yup.InferType<typeof loginSchema>;
+
+async function loadProfile(user: AuthUser): Promise<Profile | null> {
+  try {
+    const { profile } = await profileService.getByUserId(user.id);
+    return profile;
+  } catch {
+    try {
+      const { profile } = await profileService.create({
+        userId: user.id,
+        displayName: user.name,
+      });
+      return profile;
+    } catch (error) {
+      console.error("Profile load failed after login:", error);
+      return null;
+    }
+  }
+}
 
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +69,8 @@ function LoginForm() {
     try {
       setSubmitError("");
       const data = await authService.login(values);
-      setUser(data.user);
+      const profile = await loadProfile(data.user);
+      setUser(data.user, profile);
       router.push("/");
     } catch {
       setSubmitError("Unable to log in. Check your credentials and try again.");

@@ -16,8 +16,10 @@ function NavBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<MovieType[]>([]);
   const user = useAuthStore((state) => state.user);
+  const profile = useAuthStore((state) => state.profile);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const clearUser = useAuthStore((state) => state.clearUser);
+  const displayName = profile?.displayName ?? user?.name;
 
   const handleLogout = async () => {
     try {
@@ -29,7 +31,7 @@ function NavBar() {
     }
   };
 
-  const authMenu = isAuthenticated && user ? (
+  const authMenu = isAuthenticated && user && displayName ? (
     <div className="relative">
       <button
         type="button"
@@ -38,7 +40,7 @@ function NavBar() {
         aria-expanded={isUserMenuOpen}
         aria-haspopup="menu"
       >
-        {user.name}
+        {displayName}
         <ChevronDown
           className={`h-4 w-4 transition ${isUserMenuOpen ? "rotate-180" : ""}`}
         />
@@ -77,7 +79,7 @@ function NavBar() {
     </>
   );
 
-  const mobileAuthMenu = isAuthenticated && user ? (
+  const mobileAuthMenu = isAuthenticated && user && displayName ? (
     <>
       <button
         type="button"
@@ -86,7 +88,7 @@ function NavBar() {
         aria-expanded={isUserMenuOpen}
         aria-haspopup="menu"
       >
-        {user.name}
+        {displayName}
         <ChevronDown
           className={`h-4 w-4 transition ${isUserMenuOpen ? "rotate-180" : ""}`}
         />
