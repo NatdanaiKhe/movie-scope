@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "swiper/css";
 @import "swiper/css/navigation";
+@import "swiper/css/scrollbar";
 :root {
   --font-family-base: "Inter", sans-serif;
   --color-background: #faf4f0;
@@ -70,20 +71,20 @@ button {
   scrollbar-width: none;
 }
 /* Make horizontal sliders size to content height */
+.swiper.swiper-horizontal {
+  height: auto;
+}
+.swiper-horizontal .swiper-wrapper {
+  min-height: 0 !important;
+  height: auto;
+} 
 .swiper-horizontal .swiper-slide {
   @apply h-fit;
 }
-.swiper-horizontal .swiper {
-  height: 100%;
-}
-.swiper-horizontal .swiper-wrapper {
-  min-height: 471px !important;
-  height: 100%;
-} 
 
 .swiper-button-next,
 .swiper-button-prev {
-  @apply text-yellow-500! p-4 font-bold;
+  @apply text-yellow-500! p-2 font-bold;
 }
 
 @media (max-width: 768px) {

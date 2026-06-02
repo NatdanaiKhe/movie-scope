@@ -22,7 +22,10 @@ function MovieCard({movie, className}: Readonly<{movie: MovieType, className?:st
 
   return (
     <div
-      className={clsx("w-full h-auto relative shadow-lg cursor-pointer",className)}
+      className={clsx(
+        "w-full aspect-[2/3] relative overflow-hidden rounded-lg shadow-lg cursor-pointer",
+        className,
+      )}
       onClick={() => {
         router.push(`/movies/${movie.id}`);
       }}
@@ -31,13 +34,13 @@ function MovieCard({movie, className}: Readonly<{movie: MovieType, className?:st
       
     >
       {!loaded && (
-        <div className="animate-pulse bg-gray-700 w-full aspect-[2/3]"></div>
+        <div className="absolute inset-0 animate-pulse bg-gray-700"></div>
       )}
       <Image
         src={getMoviePosterUrl(movie.poster_path || "")}
-        alt="Movie Poster"
+        alt={movie.title}
         onLoad={() => setLoaded(true)}
-        className={`aspect-2/3 object-cover rounded-lg ${
+        className={`h-full w-full object-cover ${
           loaded ? "opacity-100" : "opacity-0"
         }`}
         width={500}
