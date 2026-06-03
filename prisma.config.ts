@@ -1,5 +1,4 @@
 import { existsSync, readFileSync } from "node:fs";
-import { defineConfig, env } from "prisma/config";
 
 if (existsSync(".env")) {
   const envFile = readFileSync(".env", "utf8");
@@ -16,12 +15,14 @@ if (existsSync(".env")) {
   }
 }
 
-export default defineConfig({
+const prismaConfig = {
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: env("DATABASE_URL"),
+    url: process.env.DATABASE_URL,
   },
-});
+};
+
+export default prismaConfig;
