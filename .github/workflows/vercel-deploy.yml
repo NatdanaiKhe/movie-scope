@@ -43,7 +43,7 @@ jobs:
         run: npm run lint
 
       - name: Install Vercel CLI
-        run: npm install --global vercel@latest
+        run: npm install --global vercel@54.14.5
 
       - name: Pull Vercel production configuration
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}

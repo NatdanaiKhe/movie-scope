@@ -16,7 +16,7 @@
     "axios": "^1.12.2",
     "clsx": "^2.1.1",
     "lucide-react": "^0.548.0",
-    "next": "16.0.10",
+    "next": "16.2.9",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-hook-form": "^7.77.0",
@@ -31,9 +31,13 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.0.0",
+    "eslint-config-next": "16.2.9",
     "prisma": "^7.8.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "optionalDependencies": {
+    "@tailwindcss/oxide-linux-x64-gnu": "4.1.16",
+    "lightningcss-linux-x64-gnu": "1.30.2"
   }
 }
