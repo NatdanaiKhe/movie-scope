@@ -45,3 +45,6 @@ next-env.d.ts
 .playwright-mcp/
 .agents/
 .omo/
+AGENTS.md
+skills-lock.json
+graphify-out/
