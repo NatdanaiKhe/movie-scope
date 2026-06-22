@@ -6,10 +6,8 @@
       "dependencies": {
         "@hookform/resolvers": "^5.4.0",
         "@prisma/adapter-pg": "^7.8.0",
-        "@prisma/client": "^7.8.0",
         "axios": "^1.12.2",
         "clsx": "^2.1.1",
-        "dotenv": "^17.4.2",
         "lucide-react": "^0.548.0",
         "next": "16.0.10",
         "react": "19.2.0",
@@ -21,6 +19,7 @@
         "zustand": "^5.0.14",
       },
       "devDependencies": {
+        "@prisma/client": "^7.8.0",
         "@tailwindcss/postcss": "^4",
         "@types/node": "^20",
         "@types/react": "^19",
