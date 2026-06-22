@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import type { MovieType } from "@/types/index";
 import { getMoviePosterUrl } from "@/services/movies.service";
@@ -7,8 +7,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import WatchlistButton from "@/components/WatchlistButton";
 
-function MovieCard({movie, className}: Readonly<{movie: MovieType, className?:string}>) {
+function MovieCard({
+  movie,
+  className,
+}: Readonly<{ movie: MovieType; className?: string }>) {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -23,7 +27,7 @@ function MovieCard({movie, className}: Readonly<{movie: MovieType, className?:st
   return (
     <div
       className={clsx(
-        "w-full aspect-[2/3] relative overflow-hidden rounded-lg shadow-lg cursor-pointer",
+        "w-full aspect-2/3 relative overflow-hidden rounded-lg shadow-lg cursor-pointer",
         className,
       )}
       onClick={() => {
@@ -31,7 +35,6 @@ function MovieCard({movie, className}: Readonly<{movie: MovieType, className?:st
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      
     >
       {!loaded && (
         <div className="absolute inset-0 animate-pulse bg-gray-700"></div>
@@ -50,7 +53,7 @@ function MovieCard({movie, className}: Readonly<{movie: MovieType, className?:st
       {/* detail */}
       <div
         className={
-          "absolute w-full left-0 bottom-0 p-4 md:p-10 z-10 rounded-lg bg-gradient-to-t from-black/100 to-transparent" +
+          "absolute w-full left-0 bottom-0 p-4 md:p-10 z-10 rounded-lg bg-linear-to-t from-black to-transparent" +
           (isHovered ? " block" : " hidden")
         }
       >
@@ -71,13 +74,12 @@ function MovieCard({movie, className}: Readonly<{movie: MovieType, className?:st
             : movie.overview}
         </p>
 
-        {/* <button className=" mt-4 px-6 py-2 bg-yellow-500 text-black font-semibold cursor-pointer rounded-4xl hover:bg-yellow-600 transition">
-          <PlayIcon className="inline mr-2" />
-          Watch Now
-        </button> */}
+        <div onClick={(e) => e.stopPropagation()} className="mt-3">
+          <WatchlistButton movieId={movie.id} />
+        </div>
       </div>
     </div>
   );
 }
 
-export default MovieCard
+export default MovieCard;
