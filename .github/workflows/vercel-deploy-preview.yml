@@ -1,13 +1,13 @@
-name: Deploy to Vercel
+name: Preview Deploy
 
 on:
   workflow_dispatch:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - sit
 
 jobs:
-  deploy:
+  preview:
     runs-on: ubuntu-latest
     environment: Production
 
@@ -27,13 +27,13 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Pull Vercel env
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Generate Prisma Client
         run: bun run prisma:generate
 
       - name: Build
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Preview
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
