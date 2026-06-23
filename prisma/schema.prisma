@@ -23,6 +23,7 @@ model WatchlistItem {
   id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId      String    @map("user_id") @db.Uuid
   movieId     Int       @map("movie_id")
+  status      String    @default("watchlist") @db.VarChar(20)
   title       String?   @db.VarChar(255)
   posterPath  String?   @map("poster_path")
   releaseDate DateTime? @map("release_date") @db.Date
