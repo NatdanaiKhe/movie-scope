@@ -1,43 +1,72 @@
 name: CI
-
 on:
   pull_request:
   push:
     branches:
       - main
   workflow_dispatch:
-
 permissions:
   contents: read
-
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  # Runs on every PR (including forks) and push to main.
+  # Uses a disposable CI database — no Production secrets involved.
   validate:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: movie_scope
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
       DATABASE_URL: postgresql://ci:ci@localhost:5432/movie_scope
-
+      DIRECT_URL: postgresql://ci:ci@localhost:5432/movie_scope
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
-
+          node-version: "22"
+          cache: "npm"
       - name: Install dependencies
         run: npm ci
-
       - name: Validate Prisma schema
         run: npx prisma validate
-
       - name: Lint
         run: npm run lint
-
       - name: Build
         run: npm run build
+
+  deploy-check:
+    needs: validate
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: Production
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DIRECT_URL: ${{ secrets.DIRECT_URL }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate Prisma schema against Production
+        run: npx prisma validate
