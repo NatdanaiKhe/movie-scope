@@ -7,31 +7,30 @@ datasource db {
 }
 
 model Profile {
-  id          String   @id @default(uuid()) @db.Uuid
-  userId      String   @unique @map("user_id") @db.Uuid
-  displayName String   @map("display_name") @db.VarChar(255)
-  bio         String?
-  avatarUrl   String?  @map("avatar_url")
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String          @unique @map("user_id") @db.Uuid
+  displayName    String          @map("display_name") @db.VarChar(255)
+  bio            String?
+  avatarUrl      String?         @map("avatar_url")
+  createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt      DateTime        @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
+  watchlistItems WatchlistItem[]
 
   @@map("profile")
 }
 
-enum WatchlistStatus {
-  watchlist
-  watched
-  favorite
-}
-
 model WatchlistItem {
-  id        String          @id @default(uuid()) @db.Uuid
-  userId    String          @map("user_id") @db.Uuid
-  movieId   Int             @map("movie_id")
-  status    WatchlistStatus @default(watchlist)
-  createdAt DateTime        @default(now()) @map("created_at") @db.Timestamp(6)
-  updatedAt DateTime        @updatedAt @map("updated_at") @db.Timestamp(6)
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  movieId     Int       @map("movie_id")
+  title       String?   @db.VarChar(255)
+  posterPath  String?   @map("poster_path")
+  releaseDate DateTime? @map("release_date") @db.Date
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
+  profile     Profile   @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([userId, movieId])
+  @@index([userId])
   @@map("watchlist_item")
 }
