@@ -131,3 +131,23 @@ export type CreateProfilePayload = {
   bio?: string | null;
   avatarUrl?: string | null;
 };
+
+export type WatchlistStatus = "watchlist" | "watched" | "favorite";
+
+export type WatchlistItem = {
+  id: string;
+  userId: string;
+  movieId: number;
+  status: WatchlistStatus;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type WatchlistTogglePayload = {
+  movieId: number;
+  status: WatchlistStatus;
+};
+
+export type WatchlistResponse = {
+  items: WatchlistItem[];
+};
