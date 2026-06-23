@@ -11,6 +11,13 @@ type RouteContext = {
   }>;
 };
 
+function serializeCookie(name: string, value: string): string {
+  const isProd = process.env.NODE_ENV === "production";
+  const parts = [`${name}=${value}`, "HttpOnly", "Path=/", "SameSite=Lax"];
+  if (isProd) parts.push("Secure");
+  return parts.join("; ");
+}
+
 async function proxyAuthRequest(request: NextRequest, context: RouteContext) {
   if (!AUTH_PROJECT_API_KEY) {
     return Response.json(
@@ -28,6 +35,12 @@ async function proxyAuthRequest(request: NextRequest, context: RouteContext) {
   headers.set("content-type", "application/json");
   headers.delete("host");
   headers.delete("content-length");
+  headers.delete("cookie");
+
+  const sessionToken = request.cookies.get("movie-scope-token")?.value;
+  if (sessionToken) {
+    headers.set("authorization", `Bearer ${sessionToken}`);
+  }
 
   const requestBody =
     request.method === "GET" || request.method === "HEAD"
@@ -47,8 +60,46 @@ async function proxyAuthRequest(request: NextRequest, context: RouteContext) {
     redirect: "manual",
   });
 
+  const isAuthAction = authPath === "login" || authPath === "register";
+  const shouldCaptureToken =
+    request.method === "POST" && isAuthAction && response.ok;
+
+  if (shouldCaptureToken) {
+    const data = (await response.json()) as {
+      accessToken?: string;
+      refreshToken?: string;
+      id?: string;
+      name?: string;
+    };
+
+    const accessToken = data.accessToken;
+    const responseHeaders = new Headers(response.headers);
+    responseHeaders.delete("content-length");
+
+    if (accessToken) {
+      responseHeaders.set(
+        "Set-Cookie",
+        serializeCookie("movie-scope-token", accessToken),
+      );
+      delete data.accessToken;
+      delete data.refreshToken;
+    }
+
+    if (authPath === "register") {
+      await createProfileFromData(data, requestBody);
+    }
+
+    return new Response(JSON.stringify(data), {
+      status: response.status,
+      statusText: response.statusText,
+      headers: responseHeaders,
+    });
+  }
+
   if (request.method === "POST" && authPath === "register" && response.ok) {
-    await createProfileAfterRegister(response.clone(), requestBody);
+    const data = (await response.json()) as { id?: string; name?: string };
+    await createProfileFromData(data, requestBody);
+    return Response.json(data, { status: response.status });
   }
 
   return new Response(response.body, {
@@ -58,20 +109,16 @@ async function proxyAuthRequest(request: NextRequest, context: RouteContext) {
   });
 }
 
-async function createProfileAfterRegister(
-  response: Response,
+async function createProfileFromData(
+  data: { id?: string; name?: string },
   requestBody: Record<string, unknown> | null,
 ) {
   try {
-    const data = (await response.json()) as {
-      id?: string;
-      name?: string;
-    };
     const userId = data.id;
     const displayName = getString(requestBody?.name) ?? getString(data.name);
 
     if (!userId || !displayName) {
-      console.error("Profile creation skipped after register:", {
+      console.error("Profile creation skipped:", {
         hasUserId: Boolean(userId),
         hasDisplayName: Boolean(displayName),
       });
@@ -79,16 +126,9 @@ async function createProfileAfterRegister(
     }
 
     await prisma.profile.upsert({
-      where: {
-        userId,
-      },
-      create: {
-        userId,
-        displayName,
-      },
-      update: {
-        displayName,
-      },
+      where: { userId },
+      create: { userId, displayName },
+      update: { displayName },
     });
   } catch (error) {
     console.error("Profile creation failed after auth register:", error);
@@ -101,11 +141,7 @@ function getString(value: unknown) {
 
 async function getJsonBody(request: NextRequest) {
   const text = await request.text();
-
-  if (!text) {
-    return {};
-  }
-
+  if (!text) return {};
   return JSON.parse(text) as Record<string, unknown>;
 }
 

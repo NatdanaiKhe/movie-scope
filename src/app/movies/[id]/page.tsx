@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import CastCard from "@/components/CastCard";
 import Loader from "@/components/Loader";
+import WatchlistButton from "@/components/WatchlistButton";
 
 type PageProps = {
   params: { id: string };
@@ -45,7 +46,7 @@ export default async function MoviePage({ params }: PageProps) {
     <div className="w-full h-auto flex flex-col justify-center items-center md:px-10">
       {/* Backdrop */}
       <div
-        className="w-full h-[500px] md:h-auto md:aspect-video bg-cover bg-center md:rounded-lg shadow-lg relative"
+        className="w-full h-125 md:h-auto md:aspect-video bg-cover bg-center md:rounded-lg shadow-lg relative"
         style={{
           backgroundImage: `url(${getMovieBackdropUrl(movie.backdrop_path)})`,
         }}
@@ -83,17 +84,20 @@ export default async function MoviePage({ params }: PageProps) {
             ))}
           </div>
 
-          {movieTrailer && (
-            <Link
-              href={movieTrailer}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-4 px-6 py-2 bg-yellow-500 text-black font-semibold rounded-4xl hover:bg-yellow-600 transition"
-            >
-              <PlayIcon className="inline mr-2" />
-              Watch Trailer
-            </Link>
-          )}
+          <div className="flex items-center gap-3 mt-4">
+            <WatchlistButton movieId={movie.id} />
+            {movieTrailer && (
+              <Link
+                href={movieTrailer}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-6 py-2 bg-yellow-500 text-black font-semibold rounded-full hover:bg-yellow-600 transition"
+              >
+                <PlayIcon className="inline mr-2" />
+                Watch Trailer
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 

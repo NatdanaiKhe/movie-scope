@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { movieService } from "@/services/movies.service";
-import { ChevronDown, Search, Menu, X } from "lucide-react";
+import { ChevronDown, Search, Menu, X, Bookmark } from "lucide-react";
 import type { MovieType } from "@/types/index";
 import SearchResult from "./SearchResult";
 import Link from "next/link";
@@ -49,8 +49,18 @@ function NavBar() {
       {isUserMenuOpen && (
         <div
           role="menu"
-          className="absolute right-0 top-12 w-40 rounded-lg border border-gray-800 bg-gray-950 py-2 shadow-lg"
+          className="absolute right-0 top-12 w-44 rounded-lg border border-gray-800 bg-gray-950 py-2 shadow-lg"
         >
+          <Link
+            href="/watchlist"
+            className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 transition hover:bg-gray-900 hover:text-yellow-500"
+            role="menuitem"
+            onClick={() => setIsUserMenuOpen(false)}
+          >
+            <Bookmark className="h-4 w-4" />
+            My Watchlist
+          </Link>
+          <div className="my-1 border-t border-gray-800" />
           <button
             type="button"
             onClick={handleLogout}
@@ -81,6 +91,13 @@ function NavBar() {
 
   const mobileAuthMenu = isAuthenticated && user && displayName ? (
     <>
+      <Link
+        href="/watchlist"
+        className="flex items-center gap-2 text-gray-300 transition hover:text-yellow-500"
+      >
+        <Bookmark className="h-4 w-4" />
+        My Watchlist
+      </Link>
       <button
         type="button"
         onClick={() => setIsUserMenuOpen((value) => !value)}
