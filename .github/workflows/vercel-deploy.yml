@@ -16,31 +16,28 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
       DIRECT_URL: ${{ secrets.DIRECT_URL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
       - name: Install dependencies
-        run: bun install --frozen-lockfile
-
+        run: npm ci
       - name: Lint
-        run: bun run lint
-
+        run: npm run lint
       - name: Validate Prisma schema
-        run: bunx prisma validate
-
+        run: npx prisma validate
       - name: Apply database migrations
-        run: bunx prisma migrate deploy
-
+        run: npx prisma migrate deploy
       - name: Pull Vercel production configuration
-        run: bunx vercel@latest pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
+        run: npx vercel@latest pull --yes --environment=production
       - name: Build production artifact
-        run: bunx vercel@latest build --prod --token=${{ secrets.VERCEL_TOKEN }}
-
+        run: npx vercel@latest build --prod
       - name: Deploy production artifact
-        run: bunx vercel@latest deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel@latest deploy --prebuilt --prod
